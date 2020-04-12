@@ -1,0 +1,49 @@
+{
+  "variables": {
+    "hetzner_token": "{{env `HETZNER_TOKEN`}}",
+    "gmod_server_start_params": "{{env `GMOD_SERVER_START_PARAMS`}}"
+  },
+  "builders": [
+    {
+      "type": "hcloud",
+      "token": "{{user `hetzner_token`}}",
+      "image": "ubuntu-18.04",
+      "snapshot_name": "packer gmod {{timestamp}}",
+      "snapshot_labels": {
+        "packer_name": "gmod"
+      },
+      "location": "fsn1",
+      "server_type": "cx21",
+      "ssh_username": "root"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "environment_vars": [
+        "GMOD_SERVER_START_PARAMS={{user `gmod_server_start_params`}}"
+      ],
+      "script": "./install-gmod.sh"
+    },
+    {
+      "type": "file",
+      "source": "./gmod-content.tar.gz",
+      "destination": "/home/steam/gmod/garrysmod/gmod-content.tar.gz"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "GMOD_SERVER_START_PARAMS={{user `gmod_server_start_params`}}"
+      ],
+      "script": "./init-gmod.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "apt-get autoremove --purge -y",
+        "apt-get clean",
+        "apt-get autoclean"
+      ]
+    }
+  ]
+}
