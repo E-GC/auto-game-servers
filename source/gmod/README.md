@@ -18,6 +18,8 @@ Before you can start building your first image, you should set the correct value
 | GMOD_SERVER_START_PARAMS |          | The default GMod server start parameters which you can modify.                                                                                                                              |
 | HETZNER_TOKEN            | X        | The token to use when communicating with the Hetzner API. See [Hetzner Cloud API Authentication](https://docs.hetzner.cloud/#overview-authentication)                                       |
 
+Furthermore, you should add a custom `gmod-content.tar.gz` file in order to deploy pre-adjusted content for the remote `garrysmod/` folder in the server directory.
+
 #### Remove resources
 
 In order to remove the packer snapshots open up the Hetzner Cloud Console and delete the snapshots manually.
