@@ -7,13 +7,6 @@ resource "hcloud_server" "instance" {
 }
 
 data "hcloud_image" "gmod" {
-  most_recent = true
+  most_recent   = true
   with_selector = "packer_name=gmod"
-}
-
-resource "cloudflare_record" "gmod_dns" {
-  name    = var.cloudflare_subdomain_name
-  type    = "A"
-  zone_id = var.cloudflare_domain_zone_id
-  value   = hcloud_server.instance.ipv4_address
 }

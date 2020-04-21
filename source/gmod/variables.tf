@@ -30,11 +30,11 @@ variable "cloudflare_api_key" {
   type = string
 }
 
-variable "cloudflare_subdomain_name" {
-  type    = string
-  default = "gmod"
-}
-
 variable "cloudflare_domain_zone_id" {
   type = string
+}
+
+variable "dns_subdomain_name" {
+  type    = string
+  default = "gmod"
 }

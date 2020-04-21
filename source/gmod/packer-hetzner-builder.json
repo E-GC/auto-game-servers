@@ -13,7 +13,7 @@
         "packer_name": "gmod"
       },
       "location": "fsn1",
-      "server_type": "cx21",
+      "server_type": "cpx11",
       "ssh_username": "root"
     }
   ],
