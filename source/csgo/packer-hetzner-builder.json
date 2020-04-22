@@ -1,0 +1,33 @@
+{
+  "variables": {
+    "hetzner_token": "{{env `HETZNER_TOKEN`}}"
+  },
+  "builders": [
+    {
+      "type": "hcloud",
+      "token": "{{user `hetzner_token`}}",
+      "image": "ubuntu-18.04",
+      "snapshot_name": "packer csgo {{timestamp}}",
+      "snapshot_labels": {
+        "packer_name": "csgo"
+      },
+      "location": "fsn1",
+      "server_type": "cx21",
+      "ssh_username": "root"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "./install-csgo.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "apt-get autoremove --purge -y",
+        "apt-get clean",
+        "apt-get autoclean"
+      ]
+    }
+  ]
+}
