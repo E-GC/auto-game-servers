@@ -23,7 +23,7 @@ echo '[INFO] - Install SteamCMD'
 useradd -m steam
 # set bash
 chsh -s /bin/bash steam
-su -c steam "echo \"set-option -g default-shell /bin/bash\" > ~/.tmux.conf"
+su steam -c "echo \"set-option -g default-shell /bin/bash\" > ~/.tmux.conf"
 cd ${STEAM_HOME}
 apt install -y lib32gcc1 lib32tinfo5 libstdc++6:i386
 su steam -c 'curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf -'
