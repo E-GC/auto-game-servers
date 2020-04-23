@@ -22,11 +22,7 @@ variable "hcloud_ssh_keys" {
   default = []
 }
 
-variable "cloudflare_email" {
-  type = string
-}
-
-variable "cloudflare_api_key" {
+variable "cloudflare_api_token" {
   type = string
 }
 

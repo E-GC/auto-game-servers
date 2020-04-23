@@ -4,9 +4,8 @@ provider "hcloud" {
 }
 
 provider "cloudflare" {
-  version = "~> 2.0"
-  email   = var.cloudflare_email
-  api_key = var.cloudflare_api_key
+  version   = "~> 2.0"
+  api_token = var.cloudflare_api_token
 }
 
 module "dns_entry" {
