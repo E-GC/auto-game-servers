@@ -1,33 +1,6 @@
-variable "hcloud_token" {
-  type = string
-}
-
-variable "hcloud_server_name" {
-  type    = string
-  default = "csgo-server"
-}
-
 variable "hcloud_server_type" {
   type    = string
   default = "cx21"
-}
-
-variable "hcloud_location" {
-  type    = string
-  default = "fsn1"
-}
-
-variable "hcloud_ssh_keys" {
-  type    = list(string)
-  default = []
-}
-
-variable "cloudflare_api_token" {
-  type = string
-}
-
-variable "cloudflare_domain_zone_id" {
-  type = string
 }
 
 variable "dns_subdomain_name" {
