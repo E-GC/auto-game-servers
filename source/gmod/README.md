@@ -20,6 +20,45 @@ Before you can start building your first image, you should set the correct value
 
 Furthermore, you should add a custom `gmod-content.tar.gz` file in order to deploy pre-adjusted content for the remote `garrysmod/` folder in the server directory.
 
+gmod-content.tar.gz example:
+```
+./cfg
+-----/autoexec.cfg
+-----/banned_user.cfg
+-----/config_default.cfg
+-----/game.cfg
+-----/listenserver.cfg
+-----/mapcycle.txt
+-----/mountdepots.txt
+-----/network.cfg
+-----/server.cfg
+-----/server.cfg.save
+-----/server.vdf
+-----/skill.cfg
+-----/skill_manifest.cfg
+-----/valve.rc
+./data
+------/mapvote
+------/mapvote/config.txt
+------/mapvote/recentmaps.txt
+------/ulib
+-----------/bans.txt
+-----------/groups.txt
+-----------/misc_registered.txt
+-----------/users.txt
+------/ulx
+----------/adverts.txt
+----------/banmessage.txt
+----------/banreasons.txt
+----------/config.txt
+----------/downloads.txt
+----------/gimps.txt
+----------/motd.txt
+----------/sbox_limits.txt
+----------/votemaps.txt
+------/vote
+```
+
 #### Remove resources
 
 In order to remove the packer snapshots open up the Hetzner Cloud Console and delete the snapshots manually.
