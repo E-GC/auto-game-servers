@@ -19,10 +19,11 @@ echo '[INFO] - END Unpack Gmod custom contents'
 
 echo '[INFO] - Run initial GMod startup'
 touch_gmod garrysmod/console.log
-set +ex
-su steam -c "/home/steam/gmod/./srcds_run $GMOD_SERVER_START_PARAMS -condebug -norestart" &
+GMOD_COMMAND="su steam -c \"/home/steam/gmod/./srcds_run $GMOD_SERVER_START_PARAMS -condebug -norestart\""
+tmux new-session -d -s gmod_init
+tmux send-keys -t gmod_init "$GMOD_COMMAND" ENTER
+cat /home/steam/gmod/garrysmod/console.log | sed '/VAC secure mode is activated./ q'
 tail -f /home/steam/gmod/garrysmod/console.log | sed '/VAC secure mode is activated./ q'
 fuser -k -SIGTERM 27015/tcp
-set -ex
 rm /home/steam/gmod/garrysmod/console.log
 echo '[INFO] - END Run initial GMod startup'
