@@ -22,16 +22,18 @@ echo '[INFO] - END Updating system'
 echo '[INFO] - Install SteamCMD'
 useradd -m steam
 cd ${STEAM_HOME}
-apt install -y lib32gcc1 lib32tinfo5 libstdc++6:i386
-su steam -c 'curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf -'
+echo steam steam/question select "I AGREE" | sudo debconf-set-selections
+echo steam steam/license note '' | sudo debconf-set-selections
+apt install -y lib32gcc-s1 steamcmd
+ln -s /usr/games/steamcmd /home/steam/steamcmd
 echo '[INFO] - END Install SteamCMD'
 
 echo '[INFO] - Install GMod'
-su steam -c "/home/steam/./steamcmd.sh +login anonymous +force_install_dir ${GMOD_HOME} +app_update 4020 validate +quit"
+su steam -c "/home/steam/./steamcmd +force_install_dir ${GMOD_HOME} +login anonymous +app_update 4020 validate +quit"
 echo '[INFO] - END Install GMod'
 
 echo '[INFO] - Install CS Source'
-su steam -c "/home/steam/./steamcmd.sh +login anonymous +force_install_dir ${STEAM_HOME}/css +app_update 232330 validate +quit"
+su steam -c "/home/steam/./steamcmd +force_install_dir ${STEAM_HOME}/css +login anonymous +app_update 232330 validate +quit"
 mkdir_gmod 'garrysmod/cfg'
 touch_gmod 'garrysmod/cfg/mount.cfg'
 su steam -c "tee -a ${GMOD_HOME}/garrysmod/cfg/mount.cfg <<EOF
