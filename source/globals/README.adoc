@@ -1,0 +1,35 @@
+= auto-game-servers
+
+== globals module
+
+This module contains general outputs which are used by every game module.
+
+=== HashiCorp Vault instructions
+
+Write Policy to HashiCorp Vault
+
+[source,shell]
+----
+vault policy write autogameservers-policy policy.hcl
+----
+
+Create new user and retrieve access information
+
+[source,shell]
+----
+vault write auth/approle/role/autogameservers token_policies="autogameservers-policy"
+vault read auth/approle/role/autogameservers/role-id
+vault write -f auth/approle/role/autogameservers/secret-id
+----
+
+Add secrets to the vault
+
+IMPORTANT: mind the space in front of the commands - this small detail hides the vault put command from your shell history
+
+[source,shell]
+----
+# add Hetzner cloud secret
+ vault kv put secret/autogameservers/hetzner api_key=<key>
+# add Cloudflare secrets
+ vault kv put secret/autogameservers/cloudflare api_token=<token> domain_zone_id=<zone_id>
+----

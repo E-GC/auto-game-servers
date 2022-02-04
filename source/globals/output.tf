@@ -7,7 +7,7 @@ output "hcloud_server_name" {
 }
 
 output "hcloud_token" {
-  value     = var.hcloud_token
+  value     = lookup(data.vault_generic_secret.hetzner_api.data, "api_key", "<not-found>")
   sensitive = true
 }
 
@@ -20,10 +20,12 @@ output "hcloud_ssh_keys" {
 }
 
 output "cloudflare_api_token" {
-  value     = var.cloudflare_api_token
+  value     = lookup(data.vault_generic_secret.cloudflare_api.data, "api_token", "<not-found>")
+  description = "The Cloudflare API token to use (see https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys)."
   sensitive = true
 }
 
 output "cloudflare_domain_zone_id" {
-  value = var.cloudflare_domain_zone_id
+  value = lookup(data.vault_generic_secret.cloudflare_api.data, "domain_zone_id", "<not-found>")
+  description = "The Cloudflare Zone ID (see https://community.cloudflare.com/t/where-to-find-zone-id/132913)"
 }
