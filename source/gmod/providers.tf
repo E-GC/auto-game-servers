@@ -1,10 +1,8 @@
 provider "hcloud" {
-  version = "~> 1.16"
   token   = module.globals.hcloud_token
 }
 
 provider "cloudflare" {
-  version   = "~> 2.0"
   api_token = module.globals.cloudflare_api_token
 }
 
