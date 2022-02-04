@@ -22,7 +22,7 @@ touch_gmod garrysmod/console.log
 GMOD_COMMAND="su steam -c \"/home/steam/gmod/./srcds_run $GMOD_SERVER_START_PARAMS -condebug -norestart\""
 tmux new-session -d -s gmod_init
 tmux send-keys -t gmod_init "$GMOD_COMMAND" ENTER
-sed '/VAC secure mode is activated./ q' < /home/steam/gmod/garrysmod/console.log
+sed '/VAC secure mode is activated./ q' </home/steam/gmod/garrysmod/console.log
 tail -f /home/steam/gmod/garrysmod/console.log | sed '/VAC secure mode is activated./ q'
 fuser -k -SIGTERM 27015/tcp
 rm /home/steam/gmod/garrysmod/console.log
