@@ -6,21 +6,9 @@ This module contains general outputs which are used by every game module.
 
 === HashiCorp Vault instructions
 
-Write Policy to HashiCorp Vault
+==== Initial setup
 
-[source,shell]
-----
-vault policy write autogameservers-policy policy.hcl
-----
-
-Create new user and retrieve access information
-
-[source,shell]
-----
-vault write auth/approle/role/autogameservers token_policies="autogameservers-policy"
-vault read auth/approle/role/autogameservers/role-id
-vault write -f auth/approle/role/autogameservers/secret-id
-----
+Use a token with administrator privileges to setup the vault (e.g. the initial root token).
 
 Add secrets to the vault
 
@@ -32,4 +20,33 @@ IMPORTANT: mind the space in front of the commands - this small detail hides the
  vault kv put secret/autogameservers/hetzner api_key=<key>
 # add Cloudflare secrets
  vault kv put secret/autogameservers/cloudflare api_token=<token> domain_zone_id=<zone_id>
+----
+
+Enable GitHub integration and add E-GC organization
+
+[source,shell]
+----
+vault auth enable github
+vault write auth/github/config organization=e-gc
+----
+
+Write Policy to HashiCorp Vault
+
+[source,shell]
+----
+vault policy write autogameservers-policy policy.hcl
+----
+
+Enable login for team "administrators" and attach the previously created policy.
+
+[source,shell]
+----
+vault write auth/github/map/teams/administrators value=autogameservers-policy
+----
+
+==== Login using GitHub Personal Access Token
+
+[source,shell]
+----
+vault login -method=github token="MY_TOKEN"
 ----
