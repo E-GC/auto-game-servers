@@ -1,0 +1,145 @@
+= auto-game-servers
+terraform/packer based automated game servers.
+
+== HashiCorp Vault instructions
+
+=== Initial setup
+
+Use a token with administrator privileges to setup the vault (e.g. the initial root token).
+
+Add secrets to the vault
+
+IMPORTANT: mind the space in front of the commands - this small detail hides the vault put command from your shell history
+
+[source,shell]
+----
+# add Hetzner cloud secret
+ vault kv put secret/autogameservers/hetzner api_key=<key>
+# add Cloudflare secrets
+ vault kv put secret/autogameservers/cloudflare api_token=<token> domain_zone_id=<zone_id>
+----
+
+Enable GitHub integration and add E-GC organization
+
+[source,shell]
+----
+vault auth enable github
+vault write auth/github/config organization=e-gc
+----
+
+Write Policy to HashiCorp Vault
+
+[source,shell]
+----
+vault policy write autogameservers-policy policy.hcl
+----
+
+Enable login for team "administrators" and attach the previously created policy.
+
+[source,shell]
+----
+vault write auth/github/map/teams/administrators value=autogameservers-policy
+----
+
+==== Login using GitHub Personal Access Token
+
+[source,shell]
+----
+vault login -method=github token="MY_TOKEN"
+----
+
+== packer instructions
+
+In order to build a game server snapshot, you have to navigate to the `source/packer` directory.
+
+In order to provision the resources, you first have to be authenticated with vault. The vault command line has to know the remote vault server address, so you have to set the vault address:
+[source,shell]
+----
+ export VAULT_ADDRESS='https://yourvault.com'
+----
+
+If you want to be authenticated automatically using the github access token, you should first set the token as following:
+
+[source,shell]
+----
+ export GITHUB_PERSONAL_ACCESS_TOKEN='<your token>'
+----
+
+Otherwise, you can also set the VAULT_TOKEN manually:
+
+[source,shell]
+----
+ export VAULT_TOKEN='<your token>'
+----
+
+Now that you set all required variables, you can use the packer shell script to create the snapshots:
+
+=== games
+
+==== gmod
+
+Before you can start building your first image, you should set the correct env variables:
+
+[cols="1,1,1"]
+|===
+|Name|Required|Description
+|GMOD_MAX_PLAYERS|X|The maximum amount of players who can play on this GMod server.
+|GMOD_COLLECTION_ID|X|The unique ID of the Steam Workshopcollection you want to play on this server. See https://www.youtube.com/watch?v=NzMlB-8f6mc[Updated: How to Find Mod ID for any Steam workshop game.]
+|GMOD_START_MAP|X|The map to start with when you start afresh.
+|GMOD_SERVER_START_PARAMS||The default GMod server start parameters which you can modify.
+|===
+
+Furthermore, you should add a custom ``source/packer/gamefiles/gmod/gmod-content.tar.gz`` file in order to deploy pre-adjusted content for the
+remote `garrysmod/` folder in the server directory.
+
+`gmod-content.tar.gz` example:
+----
+./cfg
+-----/autoexec.cfg
+-----/banned_user.cfg
+-----/config_default.cfg
+-----/game.cfg
+-----/listenserver.cfg
+-----/mapcycle.txt
+-----/mountdepots.txt
+-----/network.cfg
+-----/server.cfg
+-----/server.cfg.save
+-----/server.vdf
+-----/skill.cfg
+-----/skill_manifest.cfg
+-----/valve.rc
+./data
+------/mapvote
+------/mapvote/config.txt
+------/mapvote/recentmaps.txt
+------/ulib
+-----------/bans.txt
+-----------/groups.txt
+-----------/misc_registered.txt
+-----------/users.txt
+------/ulx
+----------/adverts.txt
+----------/banmessage.txt
+----------/banreasons.txt
+----------/config.txt
+----------/downloads.txt
+----------/gimps.txt
+----------/motd.txt
+----------/sbox_limits.txt
+----------/votemaps.txt
+------/vote
+----
+
+Finally, you can run the packer_run.sh file:
+[source,shell]
+----
+ ./packer_run.sh gmod
+----
+
+==== csgo
+TODO
+
+=== Remove resources
+
+In order to remove the packer snapshots open up the Hetzner Cloud Console and delete the snapshots manually.
