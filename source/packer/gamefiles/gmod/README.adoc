@@ -1,0 +1,3 @@
+= auto-game-servers
+
+Place your custom Gmod content in a gmod-content.tar.gz file in this directory.

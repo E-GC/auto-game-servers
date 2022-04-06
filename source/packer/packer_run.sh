@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -z "$HETZNER_TOKEN" ]; then
-  echo "hetzner cloud token (HETZNER_TOKEN) is not set"
+if [ -z "$VAULT_TOKEN" ] || [ -z "$VAULT_ADDR" ]; then
+  echo "vault specific env vars (VAULT_TOKEN, VAULT_ADDR) not set"
   exit 1
 fi
 
@@ -13,4 +13,4 @@ fi
 # set gmod specific (local) env variables
 export GMOD_SERVER_START_PARAMS="-console -maxplayers ${GMOD_MAX_PLAYERS} -game garrysmod +gamemode terrortown +host_workshop_collection ${GMOD_COLLECTION_ID} +map ${GMOD_START_MAP}"
 # run the packer config
-packer build packer-hetzner-builder.json
+packer build -only gmod.* packer-hetzner-builder.pkr.hcl

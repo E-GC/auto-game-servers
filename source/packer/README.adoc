@@ -1,0 +1,5 @@
+= auto-game-servers
+
+== packer
+
+This directory contains all packer-related files - especially the files used to build a csgo/gmod server.
